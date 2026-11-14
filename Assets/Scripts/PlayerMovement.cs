@@ -6,10 +6,10 @@ public class PlayerMovement : MonoBehaviour
     Vector3 movement;      // The vector to store the direction of the player's movement
     Rigidbody playerRigidbody;      // Reference to the player's rigidbody.
     Animator anim; //Reference to the animator component
-
     //for bomb
     public int noBomb=3;
     public GameObject bombPrefab;
+    public int currentHealth = 3;
 
     // Use this for initialization
     void Start () {
@@ -61,11 +61,21 @@ public class PlayerMovement : MonoBehaviour
             { //Up 
                 GetComponent<Transform>().rotation = Quaternion.Euler(0, -90, 0);
             }
-    } 
+    }
 
     void Animating(float h, float v){
         bool walking = h != 0f || v!=0f;
         anim.SetBool("isWalking", walking);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Collision detected");
+        if (other.gameObject.CompareTag("Explosion"))
+        {
+            currentHealth--;
+            if(currentHealth<=0) Destroy(gameObject);
+        }
     }
 
     void dropBomb()
