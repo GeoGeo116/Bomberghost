@@ -7,6 +7,10 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody playerRigidbody;      // Reference to the player's rigidbody.
     Animator anim; //Reference to the animator component
 
+    //for bomb
+    public int noBomb=3;
+    public GameObject bombPrefab;
+
     // Use this for initialization
     void Start () {
         // Set up references.
@@ -22,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
         // Move the player around the scene.
         Move(h, v);
         Turning();
+        dropBomb();
     } 
 
     void Move(float h, float v)
@@ -63,4 +68,11 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("isWalking", walking);
     }
 
+    void dropBomb()
+    {
+        if (noBomb > 0 && Input.GetKeyUp(KeyCode.Space))
+        { //Drop bomb
+            Instantiate(bombPrefab, new Vector3(GetComponent<Transform>().position.x, bombPrefab.transform.position.y+0.1f, GetComponent<Transform>().position.z),bombPrefab.transform.rotation);
+        }
+    } 
 }
